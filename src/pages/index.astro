@@ -1,6 +1,7 @@
 ---
 import Layout from '../components/Layout.astro'; 
-const base = import.meta.env.BASE_URL;
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
 ---
 
 <style>
@@ -18,13 +19,13 @@ h2 {text-align: center;}
       
     <div class="grid-container2">
       <div class="column">
-        <a href={`${base}projects`} class="card">
+        <a href={`${base}projects/`} class="card">
           <h2>PROJECTS</h2>
         </a>
 
       </div>
       <div class="column">
-        <a href={`${base}resume`} class="card">
+        <a href={`${base}resume/`} class="card">
           <h2>RESUME</h2>
         </a>
       </div>

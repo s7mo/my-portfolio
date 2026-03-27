@@ -1,7 +1,8 @@
 ---
 import Layout from '../../components/Layout.astro';
 
-const base = import.meta.env.BASE_URL;
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
 const arm = `${base}images/RobotArm Images`;
 const buster = `${base}images/MegaBuster Images`;
 const can = `${base}images/Can Crusher Toy Images`;
@@ -81,7 +82,7 @@ const can = `${base}images/Can Crusher Toy Images`;
     <h1><b>projects</b></h1>
 
     <div class="projects-grid">
-      <a href={`${base}projects/benchy-mover`} class="project-card">
+      <a href={`${base}projects/benchy-mover/`} class="project-card">
         <img src={`${arm}/111.png`} alt="Benchy Mover (4DOF arm) preview" />
         <h3>Benchy Mover (4DOF arm)</h3>
         <p>
@@ -90,31 +91,31 @@ const can = `${base}images/Can Crusher Toy Images`;
         </p>
       </a>
 
-      <a href={`${base}projects/robot-arm`} class="project-card">
+      <a href={`${base}projects/robot-arm/`} class="project-card">
         <img src={`${arm}/1.JPG`} alt="ASTROBRA project cover" />
         <h3>ASTROBRA</h3>
         <p>4-axis arm with user arm tracking and computer-vision gesture control.</p>
       </a>
 
-      <a href={`${base}projects/mega-man-buster-toy`} class="project-card">
+      <a href={`${base}projects/mega-man-buster-toy/`} class="project-card">
         <img src={`${buster}/11.jpg`} alt="Mega Man Buster Toy preview" />
         <h3>Mega Man Buster Toy</h3>
         <p>Ping-pong launching Mega Buster with free-fire and charge-up modes (WIP).</p>
       </a>
 
-      <a href={`${base}projects/guitar-robot`} class="project-card">
+      <a href={`${base}projects/guitar-robot/`} class="project-card">
         <img src={`${base}images/portfolio-docx/image3.png`} alt="Guitar playing robot project cover" />
         <h3>Guitar Playing Robot</h3>
         <p>Electromechanical build for automated strumming on a real guitar.</p>
       </a>
 
-      <a href={`${base}projects/can-crusher`} class="project-card">
+      <a href={`${base}projects/can-crusher/`} class="project-card">
         <img src={`${can}/7.jpeg`} alt="Can crusher project cover" />
         <h3>Can Crusher</h3>
         <p>Hydraulic/pneumatic can crusher + zipline toy—designed, built, and showcased.</p>
       </a>
 
-      <a href={`${base}projects/bubble-gum`} class="project-card">
+      <a href={`${base}projects/bubble-gum/`} class="project-card">
         <img src={`${base}images/portfolio-docx/image12.png`} alt="Gumball machine project cover" />
         <h3>Gumball Machine</h3>
         <p>Wood-built, food-finish gumball dispenser—functional and fully assembled.</p>

@@ -1,7 +1,9 @@
 ---
 import ProjectDetail from '../../../components/ProjectDetail.astro';
 
-const img = `${import.meta.env.BASE_URL}images/RobotArm Images`;
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+const img = `${base}images/RobotArm Images`;
 ---
 
 <ProjectDetail
