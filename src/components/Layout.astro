@@ -1,0 +1,931 @@
+---
+import { ClientRouter } from 'astro:transitions';
+const { title } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<html lang="en" class="theme-preload">
+  <head>
+    <script is:inline>
+      // Apply theme before first paint; re-apply after client-side navigations (ClientRouter
+      // swaps DOM from SSR HTML, which has no dark class — inline head scripts do not re-run).
+      (function () {
+        function applySavedTheme() {
+          var html = document.documentElement;
+          var savedTheme = localStorage.getItem('theme');
+          if (savedTheme === 'dark-theme') {
+            html.classList.add('dark-theme');
+            html.style.colorScheme = 'dark';
+          } else {
+            html.classList.remove('dark-theme');
+            html.style.colorScheme = 'light';
+          }
+        }
+        applySavedTheme();
+        document.addEventListener('astro:after-swap', applySavedTheme);
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <ClientRouter />
+    <style>
+ 
+      :root {
+        /* Default (light mode) */
+        --bg-color: #e5dcf9;
+        --text-color: #1a1a1a;
+        --nav-bg: #e5dcf9;
+        --nav-border: #e5dcf9;
+        --link-color: #1C2541;
+        --link-hover: #3A506B;
+        --accent: #4da6ff;
+      }
+
+      /* Smooth page-to-page transitions with Astro ClientRouter */
+      ::view-transition-old(root),
+      ::view-transition-new(root) {
+        animation-duration: 220ms;
+        animation-timing-function: ease;
+      }
+
+      ::view-transition-old(root) {
+        animation-name: page-fade-out;
+      }
+
+      ::view-transition-new(root) {
+        animation-name: page-fade-in;
+      }
+
+      @keyframes page-fade-out {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(6px); }
+      }
+
+      @keyframes page-fade-in {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Prevent theme transition flash on hard reload/navigation. */
+      html.theme-preload *,
+      html.theme-preload *::before,
+      html.theme-preload *::after {
+        transition: none !important;
+      }
+
+      html.dark-theme {
+        --bg-color: #040d16;
+        --text-color: #ffffff;
+        --nav-bg: #040d16;
+        --nav-border: #040d16;
+        --link-color: #AAA1C8;
+        --link-hover: #e8c1f0;
+        --accent: #4da6ff;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+        background: var(--bg-color);
+        color: var(--text-color);
+        overflow-x: visible;
+        transition: background 0.3s ease, color 0.3s ease;
+        body {
+        background: linear-gradient(to bottom right, #1a1a2e, #0f3460);
+        /* or use your theme variables like var(--bg-color) */
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+
+      .page-section {
+        max-width: 1000px;
+        margin: 4rem auto;
+        padding: 0 1.5rem;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw; /* Ensure nav spans full width */
+        z-index: 1000;
+        background-color: var(--nav-bg);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1rem;
+        border-bottom: 3px solid var(--nav-border);
+        font-family: 'Segoe UI', sans-serif;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+      }
+
+      .nav-left img.logo {
+        height: 50px;
+        width: auto;
+        padding-left: 6rem;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 0rem; /* spacing between items */
+        padding-right: 6rem; /* space between last item and right edge */
+      }
+
+      .nav-right a {
+        color: var(--link-color);
+        margin-left: 2.5rem;
+        text-decoration: none;
+        font-size: 1.1rem;
+        text-transform: lowercase;
+        transition: color 0.3s ease;
+
+      }
+
+      .nav-right a.active {
+        position: relative;
+        font-weight: bold;
+      }
+
+      .nav-right a.active::after {
+        content: "★";
+        position: absolute;
+        top: 50%;
+        left: -20px;
+        transform: translateY(-50%);
+        font-size: 1.0em;
+        color: var(--link-color);
+      }
+
+      .nav-right a:hover {
+        color: var(--link-hover);
+      }
+
+      #toggle-theme {
+        background: none;
+        color: var(--link-color);
+        border: none;
+        font-size: 1.4rem;
+        cursor: pointer;
+        margin-left: 1.5rem;
+        transition: transform 0.2s ease, color 0.3s ease;
+        width: 2.5rem; /* or adjust as needed */
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #toggle-theme:hover {
+        transform: scale(1.2);
+      }
+
+      .page-content {
+        margin: 0 auto;
+        padding-top: 80px; 
+        max-width: 1000px;
+        min-height: calc(100vh - 80px); /* This is the invisible spring */
+        background-color: transparent;
+        z-index: 1;
+        position: relative;
+      }
+
+      /* Apply to all links globally */
+      a {
+        color: var(--link-color);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: none;
+        color: #e8c1f0; /* Optional lighter purple on hover */
+      }
+
+      .custom-spacing p {
+        margin-bottom: 200px;
+      }
+
+      /* timeline syling */
+
+      .timeline-section {
+        padding: 4rem 2rem;
+        background: transparent;
+        color: var(--text-color);
+        text-align: center;
+      }
+
+      .timeline-wrapper {
+        overflow-x: visible;
+        white-space: nowrap;
+        padding: 1rem 0;
+      }
+
+      .timeline {
+        display: flex;
+        overflow-x: visible;
+        gap: 2rem;
+        padding: 2rem 0;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: visible;
+      }
+
+      .timeline-item {
+        flex: 0 0 auto;
+        min-width: 250px;
+        background: var(--nav-bg);
+        border: 1px solid var(--nav-border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        scroll-snap-align: start;
+        transition: transform 0.3s ease;
+        text-align: center;
+        white-space: normal; /* Let text wrap inside each item */
+      }
+
+      .timeline-item:hover {
+        transform: scale(1.05);
+      }
+
+      .timeline-content h3 {
+        margin-bottom: 0.5rem;
+        color: var(--link-color);
+      }
+      
+      .timeline-icon {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 0 2px var(--accent));
+      } /* style images/icons */ 
+      
+      main {
+      position: relative;
+      z-index: 1;
+      } /* indexing for content position relative to background */
+
+      
+      #starfield { /* stars */
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        position: fixed;
+        pointer-events: none;
+      }
+
+      .grid-container3 {
+        display: grid; /* Enables grid layout */
+        grid-template-columns: 1fr 1fr 1fr; /* Creates two equal-width columns */
+        gap: 7rem; /* Optional: Adds space between columns */
+      }
+
+      .grid-container2 {
+        display: grid; /* Enables grid layout */
+        grid-template-columns: 1fr 1fr; /* Creates two equal-width columns */
+        gap: 7rem; /* Optional: Adds space between columns */
+        padding: 2rem 15rem;
+      }
+
+      .card {
+        display: block; /* so the whole box is clickable */
+        padding: .25rem .5rem;
+        border-radius: 2px;
+        border:var(--link-color) 3px solid;
+        background-color: --link-color;
+        background: rgba(220, 220, 255, 0.1); /* change for dark mode */
+        box-shadow: 7px 7px var(--link-color);
+        text-decoration: none; /* remove underline */
+        color: var(--link-color); /* keep text color from theme */
+        transition: transform .3s ease, box-shadow .3s ease, color .3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 4px 4px var(--link-hover);
+        color: var(--link-hover);
+      }
+
+      .contact-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3rem;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-top: 2rem;
+      }
+      .contact-info-group {
+        background: rgba(220, 220, 255, 0.1);
+        border: 3px solid var(--link-color);
+        border-radius: 1px;
+        padding: 2rem 2.5rem;
+        min-width: 260px;
+        box-shadow: 0 4px 16px rgba(60, 60, 100, 0.07);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+      .contact-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+      .contact-links a {
+        font-size: 1rem;
+        color: var(--link-color);
+        text-decoration: none;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .contact-links a:hover {
+        color: var(--link-color);
+        background-color: var(--link-hover);
+      }
+      .contact-email {
+        font-size: 1rem;
+        word-break: break-all;
+      }
+
+      .contact-email a:hover{
+        font-size: 1rem;
+        word-break: break-all;
+        color: var(--link-color);
+        background-color: var(--link-hover);
+      }
+
+      .contact-form-group {
+        background: rgba(220, 220, 255, 0.1);
+        border: 3px solid var(--link-color);
+        border-radius: 1px;
+        padding: 2rem 2.5rem;
+        min-width: 500px;
+        max-width: 100%;
+        box-shadow: 0 4px 16px rgba(60, 60, 100, 0.07);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .contact-form {
+        width: 100%;
+        text-align: left;
+      }
+      .contact-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+      .contact-form input,
+      .contact-form textarea {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid var(--link-color);
+        border-radius: 2px;
+        font-size: 1rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #fff;
+        resize: both;
+        min-height: auto;
+        max-height: 600px;
+        min-width: auto;
+        max-width: 100%;
+      }
+      .contact-form button  {
+        display: block; /* so the whole box is clickable */
+        padding: .25rem .5rem;
+        border-radius: 2px;
+        border:var(--link-color) 3px solid;
+        background-color: transparent; /* change for dark mode */
+        box-shadow: 3px 3px var(--link-color);
+        text-decoration: none; /* remove underline */
+        color: var(--link-color); /* keep text color from theme */
+        transition: transform .3s ease, box-shadow .3s ease, color .3s ease;
+      }
+      .contact-form button:hover {
+        transform: translateY(-2px);
+        box-shadow: 1.5px 1.5px var(--link-hover);
+        color: var(--link-hover);
+      }
+      @media (max-width: 800px) {
+        .contact-container {
+          flex-direction: column;
+          gap: 2rem;
+          align-items: flex-start;
+        }
+        .contact-info-group,
+        .contact-form-group {
+          min-width: unset;
+          width: 100%;
+          padding: 1.2rem 1rem;
+        }
+      }
+      </style> 
+
+  </head>
+
+  <body>
+    <div class="animated-background"></div> <!-- gradient -->
+    <canvas id="starfield" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;         /* Below main content, but above background */
+      pointer-events: none;
+      background: transparent;
+    "></canvas>
+    <nav>
+      <div class="nav-left">
+        <a href="/">
+          <img src="/images/LogoEnhancedSMA.png" alt="Logo" class="logo" style="width: 50px; height:auto;" id="nav-logo"/>
+        </a>
+      </div>
+      <div class="nav-right">
+        <a href="/" data-astro-prefetch class={currentPath === '/' ? 'active' : ''}><b>home</b></a>
+        <!-- <a href="/about"><b>about</b></a> -->
+        <a href="/projects" data-astro-prefetch class={currentPath === '/projects' || currentPath.startsWith('/projects/') ? 'active' : ''}><b>projects</b></a>
+        <!-- <a href="/cad"><b>cad</b></a>  cad page archived -->
+        <a href="/resume" data-astro-prefetch class={currentPath === '/resume' ? 'active' : ''}><b>resume</b></a>
+        <!-- <a href="/contact"><b>contact me</b></a> -->
+        <button id="toggle-theme" aria-label="Toggle theme">⏾</button>
+      </div>
+    </nav>
+
+    <main class="page-content">
+      <slot />
+    </main>
+
+    <script>
+      const initializeLayout = () => {
+        const button = document.getElementById('toggle-theme');
+        const html = document.documentElement;
+        const logo = document.getElementById('nav-logo') as HTMLImageElement | null;
+
+        const darkLogo = '/images/TransparentBackgroundAndSMAwhiteLETTERS.png'; // Path to dark mode logo
+        const lightLogo = '/images/LogoEnhancedSMA.png'; // Path to light mode logo
+
+        function setLogo(theme: string) {
+          if (logo) {
+            logo.src = theme === 'dark-theme' ? darkLogo : lightLogo;
+          }
+        }
+
+        function applySavedThemeFromStorage() {
+          const savedTheme = localStorage.getItem('theme');
+          if (savedTheme === 'dark-theme') {
+            html.classList.add('dark-theme');
+            html.style.colorScheme = 'dark';
+          } else {
+            html.classList.remove('dark-theme');
+            html.style.colorScheme = 'light';
+          }
+        }
+
+        applySavedThemeFromStorage();
+
+        // Logo / toggle must follow localStorage, not <html> from swapped SSR markup.
+        const currentTheme = html.classList.contains('dark-theme') ? 'dark-theme' : '';
+        setLogo(currentTheme);
+        if (button) button.textContent = currentTheme === 'dark-theme' ? '⏾' : '☀︎';
+
+        // Theme toggle
+        if (button) {
+          button.onclick = () => {
+            const isDark = html.classList.contains('dark-theme');
+            const newTheme = isDark ? '' : 'dark-theme';
+            html.classList.toggle('dark-theme', !isDark);
+            html.style.colorScheme = !isDark ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+            setLogo(newTheme);
+            button.textContent = newTheme === 'dark-theme' ? '⏾' : '☀︎';
+          };
+        }
+
+        // Re-enable transitions after initial paint.
+        requestAnimationFrame(() => {
+          html.classList.remove('theme-preload');
+        });
+
+        // Starfield animation
+        const canvas = document.getElementById('starfield') as HTMLCanvasElement;
+        if (canvas) {
+          const windowState = window as Window & {
+            __starfieldAnimationId?: number;
+            __starfieldResizeHandler?: () => void;
+            __starfieldVisibilityHandler?: () => void;
+          };
+
+          // Prevent multiple animation loops/listeners across client-side navigations.
+          if (typeof windowState.__starfieldAnimationId === 'number') {
+            cancelAnimationFrame(windowState.__starfieldAnimationId);
+            windowState.__starfieldAnimationId = undefined;
+          }
+          if (windowState.__starfieldResizeHandler) {
+            window.removeEventListener('resize', windowState.__starfieldResizeHandler);
+          }
+          if (windowState.__starfieldVisibilityHandler) {
+            document.removeEventListener('visibilitychange', windowState.__starfieldVisibilityHandler);
+          }
+
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            const context = ctx as CanvasRenderingContext2D;
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const isSmallScreen = window.matchMedia('(max-width: 900px)').matches;
+            const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
+            const hardwareThreads = navigator.hardwareConcurrency ?? 8;
+            const lowPowerDevice = isSmallScreen || deviceMemory <= 4 || hardwareThreads <= 4;
+            const targetFPS = lowPowerDevice ? 30 : 60;
+            const minFrameTime = 1000 / targetFPS;
+            const maxPixelRatio = lowPowerDevice ? 1 : 1.5;
+            const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
+            let lastFrameTime = 0;
+            let isDarkTheme = html.classList.contains('dark-theme');
+            
+            // Disable image smoothing for pixelated effect
+            context.imageSmoothingEnabled = false;
+            // Black hole effect
+            const blackHole = {
+              x: window.innerWidth / 2,
+              y: window.innerHeight / 2,
+              radius: 40, // Much smaller
+              pullStrength: 0.1 // Gentler pull
+            };
+
+            // Update black hole position on resize
+            function updateBlackHole() {
+              blackHole.x = window.innerWidth / 2;
+              blackHole.y = window.innerHeight / 2;
+            }
+
+            // Set canvas size
+            function resizeCanvas() {
+              canvas.width = Math.floor(window.innerWidth * pixelRatio);
+              canvas.height = Math.floor(window.innerHeight * pixelRatio);
+              canvas.style.width = `${window.innerWidth}px`;
+              canvas.style.height = `${window.innerHeight}px`;
+              context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+              updateBlackHole();
+            }
+            resizeCanvas();
+
+            // Star properties
+            const stars: Array<{
+              x: number;
+              y: number;
+              radius: number;
+              opacity: number;
+              opacityChange: number;
+              twinkleSpeed: number;
+              color: string;
+              baseX: number;
+              baseY: number;
+              swirlOffset: number;
+              depth: number; // For parallax effect
+            }> = [];
+
+            // Create stars
+            function createStars() {
+              stars.length = 0; // Clear existing stars
+              const viewportArea = window.innerWidth * window.innerHeight;
+              const densityDivisor = lowPowerDevice ? 18000 : 12000;
+              const numStars = Math.floor(viewportArea / densityDivisor);
+              const vw = window.innerWidth;
+              const vh = window.innerHeight;
+
+              for (let i = 0; i < numStars; i++) {
+                const depth = Math.random(); // 0-1 for parallax effect
+                
+                // More space-like colors (darkened)
+                let color = '#cccccc'; // Darker white
+                const colorRand = Math.random();
+                if (colorRand < 0.12) color = '#cc9966'; // Darker orange
+                else if (colorRand < 0.24) color = '#6699cc'; // Darker blue
+                else if (colorRand < 0.32) color = '#cccc66'; // Darker yellow
+                else if (colorRand < 0.40) color = '#9966cc'; // Darker purple
+                else if (colorRand < 0.45) color = '#cc6699'; // Darker pink
+                else if (colorRand < 0.50) color = '#66cc99'; // Darker green
+
+                // Size based on depth (distant stars are smaller)
+                let radius;
+                if (depth < 0.3) radius = Math.random() < 0.8 ? 1 : 2; // Background tiny stars
+                else if (depth < 0.7) radius = Math.random() < 0.5 ? 2 : 3; // Mid-ground
+                else radius = Math.random() < 0.4 ? 4 : Math.random() < 0.7 ? 6 : 8; // Foreground large stars
+
+                stars.push({
+                  x: Math.random() * vw, // Initial position (CSS px)
+                  y: Math.random() * vh,
+                  baseX: Math.random() * vw, // Individual star base position
+                  baseY: Math.random() * vh,
+                  radius: radius,
+                  opacity: Math.random() * 0.5 + 0.3,
+                  opacityChange: (Math.random() - 0.5) * 0.003,
+                  twinkleSpeed: Math.random() * 0.01 + 0.005,
+                  color: color,
+                  swirlOffset: Math.random() * Math.PI * 2,
+                  depth: depth
+                });
+              }
+            }
+            createStars();
+
+            // Shooting stars (fast)
+            const shootingStars: Array<{x: number; y: number; vx: number; vy: number; length: number; width: number; opacity: number; age: number; lifespan: number}> = [];
+
+            function spawnShootingStar() {
+              // Spread spawn points more uniformly, with a bias to the top/left region so trails cross the entire screen.
+              const vw = window.innerWidth;
+              const vh = window.innerHeight;
+              const mode = Math.random();
+              let x, y;
+
+              if (mode < 0.35) {
+                // left edge, random vertical position
+                x = -30;
+                y = Math.random() * vh;
+              } else if (mode < 0.70) {
+                // top edge, random horizontal position
+                x = Math.random() * vw;
+                y = -30;
+              } else {
+                // interior spawn to keep full-screen coverage
+                x = Math.random() * vw;
+                y = Math.random() * vh;
+              }
+
+              const speed = 9 + Math.random() * 6; // reduced speed
+
+              // Flow direction: lower-right (positive vx/vy) with slightly varied slopes
+              const angle = (20 + Math.random() * 40) * (Math.PI / 180); // 20°-60° down-right
+              const vx = Math.cos(angle) * speed;
+              const vy = Math.sin(angle) * speed;
+
+              shootingStars.push({
+                x,
+                y,
+                vx,
+                vy,
+                length: 8 + Math.random() * 16, // variable length
+                width: 0.6 + Math.random() * 1.4, // variable size
+                opacity: 0.4 + Math.random() * 0.4,
+                age: 0,
+                lifespan: 70 + Math.random() * 25
+              });
+            }
+
+            // Animation loop
+            let time = 0;
+
+            function scheduleNextFrame() {
+              if (document.visibilityState !== 'visible') {
+                return;
+              }
+              windowState.__starfieldAnimationId = requestAnimationFrame(animate);
+            }
+
+            const visibilityHandler = () => {
+              if (document.visibilityState === 'visible') {
+                if (windowState.__starfieldAnimationId === undefined) {
+                  scheduleNextFrame();
+                }
+              } else if (typeof windowState.__starfieldAnimationId === 'number') {
+                cancelAnimationFrame(windowState.__starfieldAnimationId);
+                windowState.__starfieldAnimationId = undefined;
+              }
+            };
+            document.addEventListener('visibilitychange', visibilityHandler);
+            windowState.__starfieldVisibilityHandler = visibilityHandler;
+
+            function animate(timestamp: number) {
+              if (prefersReducedMotion) {
+                context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+                scheduleNextFrame();
+                return;
+              }
+
+              if (timestamp - lastFrameTime < minFrameTime) {
+                scheduleNextFrame();
+                return;
+              }
+              lastFrameTime = timestamp;
+
+              time += 0.00309; // 2% slower than 0.00315
+              isDarkTheme = html.classList.contains('dark-theme');
+              context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+              const vw = window.innerWidth;
+              const vh = window.innerHeight;
+
+              if (isDarkTheme) {
+                // Draw black hole with accretion disk only in dark mode.
+                const eventHorizonGradient = context.createRadialGradient(
+                  blackHole.x, blackHole.y, 0,
+                  blackHole.x, blackHole.y, blackHole.radius * 0.3
+                );
+                eventHorizonGradient.addColorStop(0, 'rgba(0, 0, 0, 1)');
+                eventHorizonGradient.addColorStop(1, 'rgba(0, 0, 0, 0.9)');
+                context.fillStyle = eventHorizonGradient;
+                context.beginPath();
+                context.arc(blackHole.x, blackHole.y, blackHole.radius * 0.3, 0, Math.PI * 2);
+                context.fill();
+
+                // Accretion disk (glowing ring)
+                const diskGradient = context.createRadialGradient(
+                  blackHole.x, blackHole.y, blackHole.radius * 0.3,
+                  blackHole.x, blackHole.y, blackHole.radius
+                );
+                diskGradient.addColorStop(0, 'rgba(20, 20, 60, 0.3)');
+                diskGradient.addColorStop(0.5, 'rgba(40, 30, 80, 0.2)');
+                diskGradient.addColorStop(1, 'rgba(60, 40, 100, 0.1)');
+                context.fillStyle = diskGradient;
+                context.beginPath();
+                context.arc(blackHole.x, blackHole.y, blackHole.radius, 0, Math.PI * 2);
+                context.fill();
+
+                // Add glowing particles in the accretion disk
+                for (let i = 0; i < 12; i++) {
+                  const angle = (time * 2 + i * Math.PI / 6) % (Math.PI * 2);
+                  const distance = blackHole.radius * (0.4 + Math.sin(time * 3 + i) * 0.2);
+                  const particleX = blackHole.x + Math.cos(angle) * distance;
+                  const particleY = blackHole.y + Math.sin(angle) * distance;
+                  
+                  context.fillStyle = `rgba(30, ${30 + Math.sin(time * 4 + i * 2) * 20}, ${60 + Math.sin(time * 4 + i * 2) * 30}, ${0.2 + Math.sin(time * 2 + i) * 0.2})`;
+                  context.fillRect(
+                    Math.floor(particleX - 1),
+                    Math.floor(particleY - 1),
+                    3,
+                    3
+                  );
+                }
+
+                // Draw Milky Way galaxy orbiting the black hole (dark mode only)
+                const galaxyArms = 2;
+                const galaxyParticles = lowPowerDevice ? 220 : 600;
+                const galaxyRadius = Math.max(vw, vh) * 0.8;
+                const ellipseRatio = 0.6;
+                const tiltAngle = Math.PI / 6;
+                
+                for (let arm = 0; arm < galaxyArms; arm++) {
+                  for (let i = 0; i < galaxyParticles / galaxyArms; i++) {
+                    const armAngle = (arm * Math.PI * 2 / galaxyArms);
+                    const innerRadius = blackHole.radius * 1.15;
+                    const t = i / (galaxyParticles / galaxyArms);
+                    const distance = innerRadius + t * (galaxyRadius - innerRadius);
+                    const spiralTurns = 4;
+                    const baseSpiral = Math.PI * 2 * spiralTurns;
+                    const angle = armAngle + t * baseSpiral + time * 0.1176;
+                    const radialTwist = Math.sin(t * Math.PI * 6 + time * 0.784) * 0.1 * distance;
+                    const particleIndex = arm * (galaxyParticles / galaxyArms) + i;
+                    const randomOffset = (particleIndex * 0.1 % 1 - 0.5) * 20;
+                    const ellipseX = Math.cos(angle) * (distance + randomOffset);
+                    const ellipseY = Math.sin(angle) * (distance + randomOffset) * ellipseRatio;
+                    const cosTilt = Math.cos(tiltAngle);
+                    const sinTilt = Math.sin(tiltAngle);
+                    const tiltedX = ellipseX * cosTilt - ellipseY * sinTilt;
+                    const tiltedY = ellipseX * sinTilt + ellipseY * cosTilt;
+                    const particleX = blackHole.x + tiltedX;
+                    const particleY = blackHole.y + tiltedY;
+                    
+                    if (particleX >= 0 && particleX <= canvas.width && particleY >= 0 && particleY <= canvas.height) {
+                      const centerDistance = distance / galaxyRadius;
+                      const blue = Math.floor(100 + centerDistance * 155);
+                      const green = Math.floor(150 + centerDistance * 105);
+                      const red = Math.floor(200 + centerDistance * 55);
+                      const opacity = 0.3 + centerDistance * 0.4;
+                      
+                      context.fillStyle = `rgba(${red}, ${green}, ${blue}, ${opacity})`;
+                      context.fillRect(
+                        Math.floor(particleX - 0.5),
+                        Math.floor(particleY - 0.5),
+                        2,
+                        2
+                      );
+                    }
+                  }
+                }
+              }
+
+              // Update and draw stars
+              stars.forEach(star => {
+                // Update opacity for twinkling effect (slower)
+                star.opacity += star.opacityChange * 0.4; // Even slower twinkling
+                if (star.opacity <= 0.2 || star.opacity >= 0.9) {
+                  star.opacityChange = -star.opacityChange;
+                }
+
+                // Calculate distance to black hole for gravitational pull
+                const dx = blackHole.x - star.x;
+                const dy = blackHole.y - star.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                // Apply gravitational pull if star is within range
+                let pullX = 0, pullY = 0;
+                if (distance < blackHole.radius * 2) {
+                  const pullForce = (blackHole.radius * 2 - distance) / (blackHole.radius * 2) * blackHole.pullStrength;
+                  pullX = (dx / distance) * pullForce;
+                  pullY = (dy / distance) * pullForce;
+                }
+
+                // Gentle swirling movement around individual base positions
+                const swirlRadius = 20 * (star.depth + 0.5); // Depth affects movement distance
+                const swirlSpeed = 0.4 + star.depth * 0.8; // Slower base speed
+                
+                star.x = star.baseX + Math.cos(time * swirlSpeed + star.swirlOffset) * swirlRadius + pullX;
+                star.y = star.baseY + Math.sin(time * swirlSpeed + star.swirlOffset * 1.3) * swirlRadius + pullY;
+
+                // Keep stars on screen
+                if (star.x < 0) star.x += vw;
+                if (star.x > vw) star.x -= vw;
+                if (star.y < 0) star.y += vh;
+                if (star.y > vh) star.y -= vh;
+
+                // Draw star as pixelated square
+                const [r, g, b] = star.color.match(/\w\w/g)!.map(x => parseInt(x, 16));
+                context.fillStyle = `rgba(${r}, ${g}, ${b}, ${star.opacity})`;
+                context.fillRect(
+                  Math.floor(star.x - star.radius / 2), 
+                  Math.floor(star.y - star.radius / 2), 
+                  star.radius, 
+                  star.radius
+                );
+              });
+
+              // Update and draw shooting stars
+              if (Math.random() < 0.02) { // less frequent spawns for more subtle meteors
+                spawnShootingStar();
+              }
+
+              for (let i = shootingStars.length - 1; i >= 0; i--) {
+                const meteor = shootingStars[i];
+                meteor.age += 1;
+                meteor.x += meteor.vx;
+                meteor.y += meteor.vy;
+
+                const lifeProgress = meteor.age / meteor.lifespan;
+                const fadeFactor = lifeProgress < 0.2 ? lifeProgress / 0.2 : lifeProgress > 0.8 ? (1 - lifeProgress) / 0.2 : 1;
+                const alpha = Math.max(0, Math.min(1, meteor.opacity * fadeFactor));
+
+                const trailX = meteor.x - meteor.vx * meteor.length * 0.4;
+                const trailY = meteor.y - meteor.vy * meteor.length * 0.4;
+
+                const gradient = context.createLinearGradient(trailX, trailY, meteor.x, meteor.y);
+                gradient.addColorStop(0, `rgba(255, 255, 255, 0)`);
+                gradient.addColorStop(0.8, `rgba(255, 255, 255, ${0.2 * alpha})`);
+                gradient.addColorStop(1, `rgba(255, 255, 255, ${alpha})`);
+
+                context.strokeStyle = gradient;
+                context.lineWidth = meteor.width;
+                context.beginPath();
+                context.moveTo(trailX, trailY);
+                context.lineTo(meteor.x, meteor.y);
+                context.stroke();
+
+                if (meteor.age > meteor.lifespan || meteor.x < -100 || meteor.x > vw + 100 || meteor.y < -100 || meteor.y > vh + 100) {
+                  shootingStars.splice(i, 1);
+                }
+              }
+
+              scheduleNextFrame();
+            }
+            scheduleNextFrame();
+
+            // Recreate stars on resize (single shared handler)
+            const rebuildStarsOnResize = () => {
+              resizeCanvas();
+              createStars();
+            };
+            window.addEventListener('resize', rebuildStarsOnResize);
+            windowState.__starfieldResizeHandler = rebuildStarsOnResize;
+          }
+        }
+      };
+
+      document.addEventListener("DOMContentLoaded", initializeLayout);
+      document.addEventListener("astro:page-load", initializeLayout);
+    </script>
+
+    <footer class="footer">
+      <p>© 2026 Saleem Mohammed Ali. All rights reserved.</p>
+    </footer>
+
+    <style>
+    .footer {
+      position: relative; 
+      z-index: 10; 
+      background-color: var(--nav-bg); 
+      color: var(--text-color); 
+      text-align: center;
+      padding: 1.5rem 1rem;
+      font-size: 0.875rem;
+      border-top: 3px solid var(--nav-border); 
+    }
+    </style>
+
+ 
+  </body>
+</html>
+

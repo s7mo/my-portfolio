@@ -1,0 +1,24 @@
+---
+import Layout from '../../components/Layout.astro';
+---
+
+<style>
+h1 {text-align: left; font-size: 60px;}
+p {text-align: left;}
+div {text-align: center;}
+
+.grid-containerAbout {
+  display: grid; /* Enables grid layout */
+  grid-template-columns: 1fr 1fr; /* Creates two equal-width columns */
+  gap: 7rem; /* Optional: Adds space between columns */
+  padding: 2rem 15rem;
+}
+
+</style>
+
+<Layout title="about">
+  <section class="section">
+    <h1><b>about me</b></h1>
+    <p>mechanical engineering at uw</p>
+  </section>
+</Layout>

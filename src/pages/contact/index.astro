@@ -1,0 +1,41 @@
+---
+import Layout from '../../components/Layout.astro';
+---
+
+<style>
+  h1 {text-align: left; font-size: 60px;}
+  p {text-align: left;}
+  div {text-align: center;}
+  header {font-style: 'Segoe UI';}
+</style>
+
+<Layout title="contact me">
+    <section>
+    <h1 style="font-size: 54px;"><b>LET'S CONNECT</b></h1>
+    <div class="contact-container">
+      <div class="contact-info-group">
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/s7mohamm" target="_blank" rel="noopener">
+            <span><img src="/icons/linkedIn-48px.png" alt="linkedin-icon" width="36px"/></span> <b>LinkedIn</b>
+          </a>
+          <a href="https://github.com/s7mo" target="_blank" rel="noopener">
+            <span><img src="/icons/github-48px.png" alt="github-icon" width="36px"/></span> <b>GitHub</b>
+          </a>
+        </div>
+        <div class="contact-email">
+          <b>Email: </b><a href="mailto:s7mohamm@uwaterloo.ca"> <b>s7mohamm@uwaterloo.ca</b></a>
+        </div>
+      </div>
+      <div class="contact-form-group">
+        <form class="contact-form" name="contact" method="POST" data-netlify="true" action="https://getform.io/f/apjzjpga">
+          <label for="user-email">Your Email</label>
+          <input type="email" id="user-email" name="email" required />
+          <label for="user-message">Message</label>
+          <textarea id="user-message" name="message" rows="5" required></textarea>
+          <button type="submit"><b>Send</b></button>
+        </form>
+      </div>
+    </div>
+  </section>
+  <br><br><br>
+</Layout>

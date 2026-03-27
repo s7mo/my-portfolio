@@ -1,0 +1,30 @@
+---
+import ProjectDetail from '../../../components/ProjectDetail.astro';
+
+const img = '/images/RobotArm Images';
+---
+
+<ProjectDetail
+  title="ASTROBRA"
+  subtitle="4-axis robotic arm"
+  date="September 2025 – Present"
+  images={[
+    { src: `${img}/1.JPG`, alt: 'ASTROBRA robot arm – photo 1' },
+    { src: `${img}/2.JPG`, alt: 'ASTROBRA robot arm – photo 2' },
+    { src: `${img}/3.JPG`, alt: 'ASTROBRA robot arm – photo 3' },
+  ]}
+  what={[
+    'Developing a 4-axis robotic arm controlled via user arm tracking with integrated computer-vision gesture control.',
+    'Responsible for mechanical design and assembly; a teammate leads software integration.',
+    'Goal: build an arm that mimics human arm movement.',
+  ]}
+  how={[
+    'Iterated structure, joints, and packaging for range of motion and clean integration.',
+    'Built early prototypes to validate kinematics, wiring paths, and assembly repeatability.',
+    'Coordinated mechanical milestones alongside controls and vision work in development.',
+  ]}
+  results={[
+    'Project is in early development with a clear integration path.',
+    'Mechanical direction is established for the next hardware + controls iterations.',
+  ]}
+/>

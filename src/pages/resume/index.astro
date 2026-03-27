@@ -1,0 +1,69 @@
+---
+import Layout from '../../components/Layout.astro'; // if you're using a layout
+---
+
+<style>
+h1 {text-align: left; font-size: 60px;}
+p {text-align: left;}
+div {text-align: center;}
+header {font-style: "Segoe UI";}
+
+  .page-content {
+    margin: auto;
+    padding: 0 1.5rem;
+    max-width: 1000px;
+    background-color: transparent;
+  }
+
+<style>
+    .resume-link {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--link-color);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .resume-link:hover {
+      background-color: var(--link-hover);
+    }
+
+    iframe.pdf-viewer {
+      border: 2px solid var(--link-color);
+      border-radius: 8px;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+    }
+</style>
+
+<Layout title="resume">
+  <section class="page-section">
+    <h1>resume</h1>
+
+    <!-- Download Button -->
+    <a href="/resumes/sma_resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-link" style="color:var(--link-color)">
+       open in new tab
+    </a>
+
+    <!-- Spacer -->
+    <div style="height: 2rem;"></div>
+
+    <!-- Embedded PDF Viewer -->
+    <iframe 
+      src="/resumes/sma_resume.pdf" 
+      width="100%" 
+      height="800px" 
+      class="pdf-viewer"
+    > </iframe>
+      <div>
+        if your browser does not support embedded pdfs, 
+        <a href="/resumes/sma_resume.pdf" download class="resume-link" style="color:var(--link-color)">
+            download here instead.
+        </a>        
+      </div>
+</Layout>

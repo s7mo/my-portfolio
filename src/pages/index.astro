@@ -1,0 +1,115 @@
+---
+import Layout from '../components/Layout.astro'; 
+---
+
+<style>
+h1 {text-align: center; font-size: 60px}
+p {text-align: center;}
+div {text-align: center;}
+h2 {text-align: center;}
+</style>
+
+<Layout title="home">
+
+  <section class="page-selection">
+    <h1><b><br>SALEEM<br>MOHAMMED<br>ALI</b></h1>
+    <p style="font-size: 24px"><b>UNDERGRADUATE MECHANICAL ENGINEERING PORTFOLIO<br>
+      
+    <div class="grid-container2">
+      <div class="column">
+        <a href="/projects" class="card">
+          <h2>PROJECTS</h2>
+        </a>
+
+      </div>
+      <div class="column">
+        <a href="/resume" class="card">
+          <h2>RESUME</h2>
+        </a>
+      </div>
+    </div>
+      
+    <br><br><br><br><br></b></p>
+  </section>
+
+<!--   <img src="/images/takumi.jpg" alt="takumis ae86" width="300" /> -->
+
+  <section class="home-section; custom-spacing;">
+    <h2 style="font-size: 40px; text-align: left"><b>ME</b></h2>
+    <p style="text-align: left;"> 
+      
+      Who am I? you ask. I am a mechanical engineering undergrad at the University of Waterloo. I've always been completely fascinated by how things work, so much so, you can say I eat, sleep, and breathe all things mechanical. I'm a very hands-on,
+       crafty person who enjoys being involved in the entire product lifecycle: starting from sketching out a new concept, to testing it to its limits, and iterating until it's the closest thing to perfect. My biggest passion is the automotive industry; 
+       I think cars are one of the greatest inventions out there. My ultimate dream? To engineer a part, 
+      put it through its paces, and one day own the car it goes into, just so I can proudly say, 'I helped make this drive.' My career goal is simple; to build a career out of doing exactly what I love.      <br><br><br><br>
+    </p>
+
+    <p style="text-align: center; border: 3px solid var(--link-color); padding: 0px; max-width: 350px; margin: auto; font-size: 0px;">
+        <img src="/images/machining-edit.jpg" alt="me-machining" width="350px"/>
+    </p>
+    <br><br>
+  </section>
+
+  <section>
+
+    <div class="grid-container3">
+        <div class="column">
+            <h3 style="font-size: 26px">interests</h3>
+            <p style="text-align: left; margin-left: 3.5rem;">
+              ✇ cars and aircrafts<br>
+              🛠 mechanical design<br>
+              ⚡︎ electronic systems<br>
+            </p>
+        </div>
+        <div class="column">
+            <h3 style="font-size: 26px">strengths</h3>
+             <p style="text-align: left; margin-left: 4.5rem;">
+              ⏣ machining :)<br>
+              ☆ quick learner<br>
+              ☆ problem solver<br>
+              <br>
+             </p>
+        </div>
+        <div class="column">
+            <h3 style="font-size: 26px">weaknesses</h3>
+              <p style="text-align: left; margin-left: 3.5rem;">
+              ⏣ machining :(<br>
+              ☆ prefer hands on work<br>
+              ☆ over meticulous<br>
+              </p>
+        </div>
+    </div>
+  </section>
+
+    <section>
+    <h2 style="font-size: 40px;"><b>LET'S CONNECT</b></h2>
+    <div class="contact-container">
+      <div class="contact-info-group">
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/s7mohamm" target="_blank" rel="noopener">
+            <span><img src="/icons/linkedIn-48px.png" alt="linkedin-icon" width="36px"/></span> <b>LinkedIn</b>
+          </a>
+          <a href="https://github.com/s7mo" target="_blank" rel="noopener">
+            <span><img src="/icons/github-48px.png" alt="github-icon" width="36px"/></span> <b>GitHub</b>
+          </a>
+        </div>
+        <div class="contact-email">
+          <b>Email: </b><a href="mailto:s7mohamm@uwaterloo.ca"> <b>s7mohamm@uwaterloo.ca</b></a>
+        </div>
+      </div>
+      <div class="contact-form-group">
+        <form class="contact-form" name="contact" method="POST" data-netlify="true" action="https://getform.io/f/apjzjpga">
+          <label for="user-email">Your Email</label>
+          <input type="email" id="user-email" name="email" required />
+          <label for="user-message">Message</label>
+          <textarea id="user-message" name="message" rows="5" required></textarea>
+          <button type="submit"><b>Send</b></button>
+        </form>
+      </div>
+    </div>
+  </section>
+  <br><br><br>
+</Layout>
+
+
+

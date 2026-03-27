@@ -1,0 +1,366 @@
+---
+import Layout from './Layout.astro';
+
+type Props = {
+  title: string;
+  subtitle?: string;
+  date?: string;
+  images: { src: string; alt: string }[];
+  /** Standard three blocks; omit when using customSections */
+  what?: string[];
+  how?: string[];
+  results?: string[];
+  /** Renders <slot name="sections" /> instead of What / How / Results */
+  customSections?: boolean;
+};
+
+const {
+  title,
+  subtitle,
+  date,
+  images,
+  what = [],
+  how = [],
+  results = [],
+  customSections = false,
+} = Astro.props as Props;
+
+const galleryImages = (images || []).filter(Boolean);
+const colCount = galleryImages.length >= 3 ? 3 : galleryImages.length === 2 ? 2 : 1;
+const galleryClass =
+  colCount === 3 ? 'cols-3' : colCount === 2 ? 'cols-2' : 'cols-1';
+---
+
+<Layout title={title}>
+  <section class="project">
+    <header class="project-hero">
+      <div class="project-hero__text">
+        <p class="project-eyebrow">project</p>
+        <h1 class="project-title"><b>{title}</b></h1>
+        {(subtitle || date) && (
+          <p class="project-subtitle">
+            {subtitle && <span>{subtitle}</span>}
+            {subtitle && date && <span class="sep">•</span>}
+            {date && <span>{date}</span>}
+          </p>
+        )}
+      </div>
+    </header>
+
+    {
+      galleryImages.length > 0 && (
+        <div
+          class:list={['project-gallery', galleryClass]}
+          aria-label="Project images"
+        >
+          {galleryImages.map((img, idx) => (
+            <figure class="gallery-card">
+              <div class="gallery-card__media">
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  loading={idx === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+              </div>
+            </figure>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      customSections ? (
+        <div class="project-custom-sections">
+          <slot name="sections" />
+        </div>
+      ) : (
+        <div class="project-sections">
+          <section class="info-block">
+            <h2>What?</h2>
+            <ul>
+              {what.map((item) => (
+                <li>
+                  <span class="bullet">✦</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="info-block">
+            <h2>How?</h2>
+            <ul>
+              {how.map((item) => (
+                <li>
+                  <span class="bullet">✦</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="info-block">
+            <h2>Results?</h2>
+            <ul>
+              {results.map((item) => (
+                <li>
+                  <span class="bullet">✦</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      )
+    }
+
+    <div class="project-footer-action">
+      <div class="project-nav project-nav--footer" role="navigation" aria-label="Back to projects">
+        <a href="/projects" class="back-to-projects">
+          <span class="back-to-projects__icon" aria-hidden="true">✦</span>
+          <span>all projects</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .project {
+      padding: 0.5rem 0 4rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-nav {
+      margin-bottom: 1.25rem;
+    }
+
+    .project-footer-action {
+      margin-top: clamp(2.5rem, 6vw, 4rem);
+    }
+
+    .project-nav--footer {
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-top: 2rem;
+      border-top: 2px solid var(--nav-border);
+    }
+
+    .back-to-projects {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.95rem;
+      border: 2px solid var(--nav-border);
+      border-radius: 999px;
+      background: rgba(220, 220, 255, 0.08);
+      color: var(--link-color);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-transform: lowercase;
+      letter-spacing: 0.04em;
+      box-shadow: 4px 4px 0 var(--link-color);
+      transition: transform 160ms ease, box-shadow 160ms ease,
+        border-color 160ms ease, color 160ms ease;
+    }
+
+    .back-to-projects:hover {
+      transform: translateY(-2px);
+      border-color: var(--link-hover);
+      color: var(--link-hover);
+      box-shadow: 3px 3px 0 var(--link-hover);
+    }
+
+    .back-to-projects__icon {
+      color: var(--link-hover);
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .project-hero {
+      display: grid;
+      gap: 0.75rem;
+      align-items: end;
+      margin-bottom: 1.75rem;
+    }
+
+    .project-eyebrow {
+      text-transform: lowercase;
+      letter-spacing: 0.18em;
+      opacity: 0.75;
+      margin: 0 0 0.5rem;
+      color: var(--link-color);
+    }
+
+    .project-title {
+      font-size: clamp(2rem, 5vw, 3.35rem);
+      line-height: 1.05;
+      margin: 0 0 0.5rem;
+    }
+
+    .project-subtitle {
+      margin: 0;
+      font-size: 1.05rem;
+      opacity: 0.85;
+      line-height: 1.45;
+    }
+
+    .project-subtitle .sep {
+      margin: 0 0.6rem;
+      opacity: 0.6;
+    }
+
+    .project-gallery {
+      display: grid;
+      gap: 1.25rem;
+      margin: 0 0 2.5rem;
+    }
+
+    .project-gallery.cols-1 {
+      grid-template-columns: 1fr;
+      max-width: min(720px, 100%);
+    }
+
+    .project-gallery.cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .project-gallery.cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .gallery-card {
+      margin: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid var(--nav-border);
+      background: rgba(0, 0, 0, 0.12);
+      box-shadow: 8px 8px 0 var(--link-color);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 6px 6px 0 var(--link-hover);
+    }
+
+    .gallery-card__media {
+      aspect-ratio: 4 / 3;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .gallery-card__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .project-sections,
+    .project-custom-sections {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .project-custom-sections :global(.portfolio-stack) {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .project-custom-sections :global(.portfolio-block) {
+      border: 2px solid var(--nav-border);
+      background: rgba(220, 220, 255, 0.08);
+      border-radius: 18px;
+      padding: 1.5rem 1.6rem;
+      box-shadow: 10px 10px 0 var(--link-color);
+    }
+
+    .project-custom-sections :global(.portfolio-block h2) {
+      margin: 0 0 0.85rem;
+      font-size: 1.35rem;
+      color: var(--link-color);
+    }
+
+    .project-custom-sections :global(.portfolio-block h3) {
+      margin: 1.25rem 0 0.5rem;
+      font-size: 1.1rem;
+      color: var(--link-hover);
+    }
+
+    .project-custom-sections :global(.portfolio-block p),
+    .project-custom-sections :global(.portfolio-block li) {
+      line-height: 1.55;
+    }
+
+    .project-custom-sections :global(.portfolio-block ul),
+    .project-custom-sections :global(.portfolio-block ol) {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .project-custom-sections :global(.portfolio-block ul) {
+      list-style: disc;
+    }
+
+    .project-custom-sections :global(.portfolio-intro) {
+      font-size: 1.05rem;
+      opacity: 0.92;
+      margin-bottom: 0;
+    }
+
+    .info-block {
+      border: 2px solid var(--nav-border);
+      background: rgba(220, 220, 255, 0.08);
+      border-radius: 18px;
+      padding: 1.5rem 1.6rem;
+      box-shadow: 10px 10px 0 var(--link-color);
+    }
+
+    .info-block h2 {
+      margin: 0 0 0.85rem;
+      font-size: 1.35rem;
+      color: var(--link-color);
+    }
+
+    .info-block ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .info-block li {
+      display: grid;
+      grid-template-columns: 1.2rem 1fr;
+      gap: 0.5rem;
+      align-items: start;
+      line-height: 1.5;
+    }
+
+    .bullet {
+      color: var(--link-hover);
+      opacity: 0.9;
+      transform: translateY(0.1rem);
+    }
+
+    @media (max-width: 900px) {
+      .project-gallery.cols-2,
+      .project-gallery.cols-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-card,
+      .info-block,
+      .project-custom-sections :global(.portfolio-block) {
+        box-shadow: 6px 6px 0 var(--link-color);
+      }
+    }
+  </style>
+</Layout>

@@ -1,0 +1,146 @@
+---
+import ProjectDetail from '../../../components/ProjectDetail.astro';
+
+const img = '/images/RobotArm Images';
+---
+
+<ProjectDetail
+  title="Benchy Mover (4DOF arm)"
+  subtitle="ME380 · undergraduate design requirement"
+  date="Team of 5 · 4 months"
+  images={[
+    { src: `${img}/4.jpeg`, alt: 'Benchy mover arm – photo 4' },
+    { src: `${img}/5.JPG`, alt: 'Benchy mover arm – photo 5' },
+    { src: `${img}/6.JPG`, alt: 'Benchy mover arm – photo 6' },
+  ]}
+  customSections
+>
+  <div class="portfolio-stack" slot="sections">
+    <div class="portfolio-block">
+      <p class="portfolio-intro">
+        Undergraduate ME380 design project: build a machine that can move 3D Benchy models.
+        Our team chose design constraints centered on <b>precision</b>, <b>dexterity</b>, and
+        <b>strength-to-weight</b> to guide sizing, structure, and integration decisions across
+        a four-month build.
+      </p>
+    </div>
+
+    <div class="portfolio-block">
+      <h2>Design objectives</h2>
+      <ul>
+        <li>
+          Lift, transport, and place a minimum payload of at least 1:3 the weight of the
+          entire robot arm.
+        </li>
+        <li>Complete the required Benchy pick-and-place cycle in under 60 seconds.</li>
+        <li>Achieve repeatable positional accuracy under 1&nbsp;cm.</li>
+        <li>Use only one approved power supply, drawing under 24&nbsp;V total.</li>
+      </ul>
+    </div>
+
+    <div class="portfolio-block">
+      <h2>Our design</h2>
+      <p>
+        The final direction paired a four-degree-of-freedom arm with integrated actuation,
+        control, and mechanical structure tuned for the objectives above. Captions in the
+        PDF summarize final rendered, unwired, and wired assembly views.
+      </p>
+    </div>
+
+    <div class="portfolio-block">
+      <h2>Main individual contributions</h2>
+
+      <h3>Preliminary model & joint design</h3>
+      <ul>
+        <li>
+          Defined joint connections linking arm segments at servo joints in sketches, then in
+          CAD.
+        </li>
+        <li>
+          Established a consistent servo mounting template implemented across joints for
+          integration alignment.
+        </li>
+      </ul>
+
+      <h3>Elbow & joint connections</h3>
+      <ul>
+        <li>Designed the elbow segment and supported shoulder segment CAD development.</li>
+        <li>
+          Tuned motor orientations for required range (including ~180° servo motion where
+          applicable) and checked feasibility at each revision.
+        </li>
+      </ul>
+
+      <h3>Miniature control unit</h3>
+      <ul>
+        <li>
+          Modelled a scaled control arm driven by potentiometers as an alternative control
+          concept.
+        </li>
+        <li>
+          Printed, assembled, tolerance-checked, and soldered wiring—later not used due to
+          control limitations, but it informed mechanical tolerancing and interface design.
+        </li>
+      </ul>
+
+      <h3>Base plate manufacturing</h3>
+      <ul>
+        <li>
+          Collaborated on counterweight strategy; implemented base-plate mounting features.
+        </li>
+        <li>
+          Milled mounting holes and tapped to M3 in one attempt for accurate base integration.
+        </li>
+      </ul>
+    </div>
+
+    <div class="portfolio-block">
+      <h2>Impact on outcome</h2>
+      <ul>
+        <li>
+          Standardized servo connections across the arm so downstream segments (including
+          portions I did not own, such as the wrist) could reuse the same interface language.
+        </li>
+        <li>
+          Reduced mass and complexity in joints and links to support strength-to-weight goals
+          while keeping room for wire management features.
+        </li>
+      </ul>
+    </div>
+
+    <div class="portfolio-block">
+      <h2>Technical summary (design process)</h2>
+      <ol>
+        <li>
+          <b>Preliminary modelling:</b> locked rotational axes, mounting points, and joint
+          strategy before CAD solidification.
+        </li>
+        <li>
+          <b>Elbow / shoulder iteration:</b> repeated assembly and stress-feasibility checks
+          until a manufacturable solution.
+        </li>
+        <li>
+          <b>Miniature controller:</b> validated print tolerances and motion intent; retired
+          for control reasons but de-risked interfaces.
+        </li>
+        <li>
+          <b>Base plate:</b> precise machining and tapping for a reliable structural anchor.
+        </li>
+      </ol>
+    </div>
+
+    <div class="portfolio-block">
+      <h2>Learning outcomes</h2>
+      <ul>
+        <li>
+          Stronger CAD + multipart assembly practice, including tolerances for clearance,
+          sliding, and shaft interference.
+        </li>
+        <li>
+          Better integration thinking across mechanical, electrical, and controls constraints
+          (space, routing, and limitations of each domain).
+        </li>
+      </ul>
+    </div>
+  </div>
+</ProjectDetail>

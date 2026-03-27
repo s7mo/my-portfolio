@@ -1,0 +1,29 @@
+---
+import ProjectDetail from '../../../components/ProjectDetail.astro';
+
+const img = '/images/Can Crusher Toy Images';
+---
+
+<ProjectDetail
+  title="Can Crusher"
+  subtitle="end of term design project"
+  date="November 2022 – December 2022"
+  images={[
+    { src: `${img}/7.jpeg`, alt: 'Can crusher prototype' },
+    { src: `${img}/8.jpeg`, alt: 'Can crusher design sketch' },
+    { src: `${img}/9.jpeg`, alt: 'Can crusher play procedure' },
+  ]}
+  what={[
+    'Ideated, prototyped, designed, and fabricated a hydraulic/pneumatic press and zipline used to crush cans.',
+    'Team design project with product-style presentation and symposium judging.',
+  ]}
+  how={[
+    'Used SOLIDWORKS and AutoCAD for concepts and detailed design.',
+    'Applied iterative design and functional analysis to hit project objectives.',
+    'Led aesthetic direction, ad-style visuals, and preliminary concept drawings.',
+  ]}
+  results={[
+    'Showcased to judges from Spin Master Ltd at a class symposium.',
+    'Delivered advertisement-style play procedure and supporting design visuals.',
+  ]}
+/>

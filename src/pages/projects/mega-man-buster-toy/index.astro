@@ -1,0 +1,27 @@
+---
+import ProjectDetail from '../../../components/ProjectDetail.astro';
+
+const img = '/images/MegaBuster Images';
+---
+
+<ProjectDetail
+  title="Mega Man Buster Toy"
+  subtitle="prop · electromechanical toy"
+  date="Work in progress"
+  images={[
+    { src: `${img}/4.jpg`, alt: 'Mega Man buster toy – image 4' },
+    { src: `${img}/5.jpg`, alt: 'Mega Man buster toy – image 5' },
+    { src: `${img}/3.png`, alt: 'Mega Man buster toy – image 3' },
+  ]}
+  what={[
+    'Build a toy that accurately depicts Mega Man’s Mega Buster, shooting ping pong balls.',
+    'Include both free-fire and charge-up firing modes for playful, recognizable behavior.',
+  ]}
+  how={[
+    'Arduino-based control with DC motors and an ESC for motion / launch sequencing.',
+    '3D-printed structural parts for the body, barrel, and mounting interfaces.',
+  ]}
+  results={[
+    'Work in progress—hardware integration and mode tuning are ongoing.',
+  ]}
+/>
