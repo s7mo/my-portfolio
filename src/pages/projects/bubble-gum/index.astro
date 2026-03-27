@@ -1,5 +1,6 @@
 ---
 import ProjectDetail from '../../../components/ProjectDetail.astro';
+const base = import.meta.env.BASE_URL;
 ---
 
 <ProjectDetail
@@ -7,8 +8,8 @@ import ProjectDetail from '../../../components/ProjectDetail.astro';
   subtitle="woodworking + mechanism fabrication"
   date="April 2022 – May 2022"
   images={[
-    { src: '/images/portfolio-docx/image12.png', alt: 'Assembled gumball machine' },
-    { src: '/images/portfolio-docx/image13.png', alt: 'Gumball machine parts layout' },
+    { src: `${base}images/portfolio-docx/image12.png`, alt: 'Assembled gumball machine' },
+    { src: `${base}images/portfolio-docx/image13.png`, alt: 'Gumball machine parts layout' },
   ]}
   what={[
     'Fabricated a fully functional gumball distributing machine made almost entirely out of wood.',

@@ -29,6 +29,7 @@ const galleryImages = (images || []).filter(Boolean);
 const colCount = galleryImages.length >= 3 ? 3 : galleryImages.length === 2 ? 2 : 1;
 const galleryClass =
   colCount === 3 ? 'cols-3' : colCount === 2 ? 'cols-2' : 'cols-1';
+const projectsHref = `${import.meta.env.BASE_URL}projects`;
 ---
 
 <Layout title={title}>
@@ -117,7 +118,7 @@ const galleryClass =
 
     <div class="project-footer-action">
       <div class="project-nav project-nav--footer" role="navigation" aria-label="Back to projects">
-        <a href="/projects" class="back-to-projects">
+        <a href={projectsHref} class="back-to-projects">
           <span class="back-to-projects__icon" aria-hidden="true">✦</span>
           <span>all projects</span>
         </a>

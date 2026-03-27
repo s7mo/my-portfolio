@@ -1,5 +1,6 @@
 ---
 import ProjectDetail from '../../../components/ProjectDetail.astro';
+const base = import.meta.env.BASE_URL;
 ---
 
 <ProjectDetail
@@ -7,9 +8,9 @@ import ProjectDetail from '../../../components/ProjectDetail.astro';
   subtitle="design + manufacturing"
   date="(placeholder)"
   images={[
-    { src: '/images/project-placeholder-1.svg', alt: 'Wind turbine placeholder image 1' },
-    { src: '/images/project-placeholder-2.svg', alt: 'Wind turbine placeholder image 2' },
-    { src: '/images/project-placeholder-3.svg', alt: 'Wind turbine placeholder image 3' },
+    { src: `${base}images/project-placeholder-1.svg`, alt: 'Wind turbine placeholder image 1' },
+    { src: `${base}images/project-placeholder-2.svg`, alt: 'Wind turbine placeholder image 2' },
+    { src: `${base}images/project-placeholder-3.svg`, alt: 'Wind turbine placeholder image 3' },
   ]}
   what={[
     'Designed and manufactured a functional small wind turbine concept.',

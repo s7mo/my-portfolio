@@ -2,6 +2,12 @@
 import { ClientRouter } from 'astro:transitions';
 const { title } = Astro.props;
 const currentPath = Astro.url.pathname;
+const base = import.meta.env.BASE_URL;
+const homeHref = base;
+const projectsHref = `${base}projects`;
+const resumeHref = `${base}resume`;
+const logoLight = `${base}images/LogoEnhancedSMA.png`;
+const logoDark = `${base}images/TransparentBackgroundAndSMAwhiteLETTERS.png`;
 ---
 
 <html lang="en" class="theme-preload">
@@ -441,16 +447,16 @@ const currentPath = Astro.url.pathname;
     "></canvas>
     <nav>
       <div class="nav-left">
-        <a href="/">
-          <img src="/images/LogoEnhancedSMA.png" alt="Logo" class="logo" style="width: 50px; height:auto;" id="nav-logo"/>
+        <a href={homeHref}>
+          <img src={logoLight} alt="Logo" class="logo" style="width: 50px; height:auto;" id="nav-logo"/>
         </a>
       </div>
       <div class="nav-right">
-        <a href="/" data-astro-prefetch class={currentPath === '/' ? 'active' : ''}><b>home</b></a>
+        <a href={homeHref} data-astro-prefetch class={currentPath === base ? 'active' : ''}><b>home</b></a>
         <!-- <a href="/about"><b>about</b></a> -->
-        <a href="/projects" data-astro-prefetch class={currentPath === '/projects' || currentPath.startsWith('/projects/') ? 'active' : ''}><b>projects</b></a>
+        <a href={projectsHref} data-astro-prefetch class={currentPath === `${base}projects` || currentPath.startsWith(`${base}projects/`) ? 'active' : ''}><b>projects</b></a>
         <!-- <a href="/cad"><b>cad</b></a>  cad page archived -->
-        <a href="/resume" data-astro-prefetch class={currentPath === '/resume' ? 'active' : ''}><b>resume</b></a>
+        <a href={resumeHref} data-astro-prefetch class={currentPath === `${base}resume` ? 'active' : ''}><b>resume</b></a>
         <!-- <a href="/contact"><b>contact me</b></a> -->
         <button id="toggle-theme" aria-label="Toggle theme">⏾</button>
       </div>
@@ -466,8 +472,9 @@ const currentPath = Astro.url.pathname;
         const html = document.documentElement;
         const logo = document.getElementById('nav-logo') as HTMLImageElement | null;
 
-        const darkLogo = '/images/TransparentBackgroundAndSMAwhiteLETTERS.png'; // Path to dark mode logo
-        const lightLogo = '/images/LogoEnhancedSMA.png'; // Path to light mode logo
+        const basePath = '/my-portfolio/';
+        const darkLogo = `${basePath}images/TransparentBackgroundAndSMAwhiteLETTERS.png`;
+        const lightLogo = `${basePath}images/LogoEnhancedSMA.png`;
 
         function setLogo(theme: string) {
           if (logo) {

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../components/Layout.astro';
+const base = import.meta.env.BASE_URL;
 ---
 
 <style>
@@ -16,10 +17,10 @@ import Layout from '../../components/Layout.astro';
       <div class="contact-info-group">
         <div class="contact-links">
           <a href="https://www.linkedin.com/in/s7mohamm" target="_blank" rel="noopener">
-            <span><img src="/icons/linkedIn-48px.png" alt="linkedin-icon" width="36px"/></span> <b>LinkedIn</b>
+            <span><img src={`${base}icons/linkedIn-48px.png`} alt="linkedin-icon" width="36px"/></span> <b>LinkedIn</b>
           </a>
           <a href="https://github.com/s7mo" target="_blank" rel="noopener">
-            <span><img src="/icons/github-48px.png" alt="github-icon" width="36px"/></span> <b>GitHub</b>
+            <span><img src={`${base}icons/github-48px.png`} alt="github-icon" width="36px"/></span> <b>GitHub</b>
           </a>
         </div>
         <div class="contact-email">
